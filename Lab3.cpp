@@ -73,7 +73,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         GetClientRect(hWnd, &rect);
         rect2=RECT{ RN(0,rect.right), RN(0,rect.bottom), RN(0,rect.right), RN(0,rect.bottom) };
         Rectangle(hDC, rect2.left,rect2.top,rect2.right,rect2.bottom);
-        brush= CreateSolidBrush(RN(0,255));
+        brush= CreateSolidBrush(RGB(RN(0,255),RN(0,255),RN(0,255)));
         FillRect(hDC, &rect2, brush);
         ReleaseDC(hWnd, hDC);
         break;
