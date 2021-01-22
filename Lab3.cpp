@@ -56,6 +56,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nC
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+    static BOOL time;
     HDC hDC;
     RECT rect,rect2;
     static HPEN hpen1;
@@ -63,25 +64,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     switch (msg)
     {
     case WM_CREATE:
-
+        time = FALSE;
         SetTimer(hWnd, 1, 500, NULL);
         break;
     case WM_PAINT:
-        hpen1 = CreatePen(RN(0, 255), RN(1, 5), RGB(RN(0, 255), RN(0, 255), RN(0, 255)));
-        hDC = GetDC(hWnd);
-        SelectObject(hDC, hpen1);
-        GetClientRect(hWnd, &rect);
-        rect2 = RECT{ RN(0,rect.right), RN(0,rect.bottom), RN(0,rect.right), RN(0,rect.bottom) };
-        Rectangle(hDC, rect2.left, rect2.top, rect2.right, rect2.bottom);
-        brush = CreateSolidBrush(RGB(RN(0, 255), RN(0, 255), RN(0, 255)));
-        FillRect(hDC, &rect2, brush);
-        ReleaseDC(hWnd, hDC);
+        if (time)
+        {
+            hpen1 = CreatePen(RN(0, 255), RN(1, 5), RGB(RN(0, 255), RN(0, 255), RN(0, 255)));
+            hDC = GetDC(hWnd);
+            SelectObject(hDC, hpen1);
+            GetClientRect(hWnd, &rect);
+            rect2 = RECT{ RN(0,rect.right), RN(0,rect.bottom), RN(0,rect.right), RN(0,rect.bottom) };
+            Rectangle(hDC, rect2.left, rect2.top, rect2.right, rect2.bottom);
+            brush = CreateSolidBrush(RGB(RN(0, 255), RN(0, 255), RN(0, 255)));
+            FillRect(hDC, &rect2, brush);
+            ReleaseDC(hWnd, hDC);
+        }
+        
         break;
 
     case WM_TIMER:
     {
         InvalidateRect(hWnd, NULL, TRUE);
         RedrawWindow(hWnd, NULL, NULL, RDW_ERASENOW);
+        time = TRUE;
         break;
     }
     case WM_DESTROY:
