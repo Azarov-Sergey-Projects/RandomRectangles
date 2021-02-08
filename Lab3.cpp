@@ -79,6 +79,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
             brush = CreateSolidBrush(RGB(RN(0, 255), RN(0, 255), RN(0, 255)));
             FillRect(hDC, &rect2, brush);
             ReleaseDC(hWnd, hDC);
+            time = FALSE;
         }
         
         break;
