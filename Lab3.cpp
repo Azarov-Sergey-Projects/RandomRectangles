@@ -58,7 +58,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     static BOOL time;
     HDC hDC;
-    RECT rect,rect2;
+    static RECT rect,rect2;
+    static RECT rectOld;
     static HPEN hpen1;
     HBRUSH brush;
     switch (msg)
@@ -67,6 +68,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         time = FALSE;
         SetTimer(hWnd, 1, 500, NULL);
         break;
+    case WM_SIZE:
+        GetClientRect(hWnd, &rectOld);
+        break;
     case WM_PAINT:
         if (time)
         {
@@ -74,18 +78,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
             hDC = GetDC(hWnd);
             SelectObject(hDC, hpen1);
             GetClientRect(hWnd, &rect);
-            rect2 = RECT{ RN(0,rect.right), RN(0,rect.bottom), RN(0,rect.right), RN(0,rect.bottom) };
+            
             Rectangle(hDC, rect2.left, rect2.top, rect2.right, rect2.bottom);
             brush = CreateSolidBrush(RGB(RN(0, 255), RN(0, 255), RN(0, 255)));
             FillRect(hDC, &rect2, brush);
             ReleaseDC(hWnd, hDC);
             time = FALSE;
         }
-        
         break;
-
     case WM_TIMER:
     {
+        rect2 = RECT{ RN(0,rectOld.right), RN(0,rectOld.bottom), RN(0,rectOld.right), RN(0,rectOld.bottom) };
         InvalidateRect(hWnd, NULL, TRUE);
         RedrawWindow(hWnd, NULL, NULL, RDW_ERASENOW);
         time = TRUE;
@@ -109,5 +112,6 @@ INT RN(INT lBorder,INT rBorder)
     std::uniform_int_distribution<INT> rand(lBorder, rBorder);
     return rand(rd);
 }
+
 
 
