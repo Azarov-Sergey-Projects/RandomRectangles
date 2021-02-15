@@ -72,8 +72,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         GetClientRect(hWnd, &rectOld);
         break;
     case WM_PAINT:
-        if (time)
-        {
+        
             hpen1 = CreatePen(RN(0, 255), RN(1, 5), RGB(RN(0, 255), RN(0, 255), RN(0, 255)));
             hDC = GetDC(hWnd);
             SelectObject(hDC, hpen1);
@@ -84,7 +83,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
             FillRect(hDC, &rect2, brush);
             ReleaseDC(hWnd, hDC);
             time = FALSE;
-        }
+        
         break;
     case WM_TIMER:
     {
@@ -112,6 +111,8 @@ INT RN(INT lBorder,INT rBorder)
     std::uniform_int_distribution<INT> rand(lBorder, rBorder);
     return rand(rd);
 }
+
+
 
 
 
